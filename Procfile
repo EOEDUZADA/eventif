@@ -1,0 +1,1 @@
+web:gunircorn eventif.wsgi --log-file -
