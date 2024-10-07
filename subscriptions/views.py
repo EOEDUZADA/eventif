@@ -22,7 +22,7 @@ def subscribe(request):
             return render(request,'subscriptions/subscription_form.html', {'form': SubscriptionForm()})
     else:
         context = {'form': SubscriptionForm()}
-        return render(request, 'subscriptions/subscription_form.html', context)
+        return render(request, 'subscriptions/subscription_form.html', conext)
     
 
 
