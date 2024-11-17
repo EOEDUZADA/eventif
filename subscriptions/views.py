@@ -15,6 +15,7 @@ def subscribe(request):
         return new(request)
 
 
+
 def create(request):
     form = SubscriptionForm(request.POST)
 
