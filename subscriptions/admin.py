@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.utils.timezone import now
 from subscriptions.models import Subscription
 
-
 class SubscriptionModelAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'phone', 'cpf',
                     'created_at', 'subscribed_today')
