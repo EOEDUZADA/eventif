@@ -1,1 +1,1 @@
-web:gunircorn eventif.wsgi --log-file -
+web:gunicorn eventif.wsgi --log-file -
