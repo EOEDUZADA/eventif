@@ -27,6 +27,4 @@ urlpatterns = [
     path('inscricao/<int:pk>/', detail),
     path('contact/', contact),  
     path('admin/', admin.site.urls),
-   
-   
 ]

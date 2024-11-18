@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from contact.forms import ContactForm
 from contact.models import ContactModel
 from django.template.loader import render_to_string
+from decouple import config
 
 def contact(request):
     if request.method == 'POST':
@@ -30,19 +31,19 @@ def contact(request):
             send_mail(
                 assunto_email_usuario,
                 body,
-                settings.DEFAULT_FROM_EMAIL, #from meu email
-                [email],  #to meu email
+                config('DEFAULT_FROM_EMAIL'), #from meu email
+                [email],  #to email do usuário
                 fail_silently=False
             )
-           
+
 
             # administrador
             assunto_email_admin = "Novo contato de um usuário!"
             send_mail(
                 assunto_email_admin,
                 body,
-                settings.DEFAULT_FROM_EMAIL, #from meu email
-                ['eduardo.silva@aluno.riogrande.ifrs.edu.br'], #to - email do eventif
+                config('DEFAULT_FROM_EMAIL'), #from meu email
+                [config('DEFAULT_TO_EMAIL')], #to - email do eventif
                 fail_silently=False 
             )
             return HttpResponse("Formulário enviado com sucesso!") 
