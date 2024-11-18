@@ -19,10 +19,14 @@ from django.urls import path
 from core.views import home
 from subscriptions.views import subscribe
 from contact.views import contact
+from subscriptions.views import subscribe, detail
 
 urlpatterns = [
     path('', home),
-    path('inscricao/', subscribe),
+    path('inscricao/', subscribe), 
+    path('inscricao/<int:pk>/', detail),
+    path('contact/', contact),  
     path('admin/', admin.site.urls),
-    path('contact/', contact)
+   
+   
 ]
