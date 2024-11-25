@@ -2,7 +2,9 @@ from django.test import TestCase
 from django.core import mail
 from contact.forms import ContactForm
 from contact.models import ContactModel
-import unittest
+from django.core.mail import send_mail
+
+
 
 
 class ContactGet(TestCase):
@@ -19,8 +21,8 @@ class ContactGet(TestCase):
     def test_html(self):
         tags = (
             ('<form', 1),
-            ('<input', 6),
-            ('type="text"', 3),
+            ('<input', 5),
+            ('type="text"', 2),
             ('type="email"', 1),
             ('type="submit"', 1)
         )
@@ -32,24 +34,24 @@ class ContactGet(TestCase):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
 
 
-class SubscribePostValid(TestCase):
+class ContactPostValid(TestCase):
     def setUp(self):
-        data = dict(name="Cleber Fonseca",
-                    email='profcleberfonseca@gmail.com', phone='53-12345-6789')
+        data = dict(name="Eduardo Silva",
+                    email='eduardo.silva@aluno.riogrande.ifrs.edu.br', phone='53-12345-6789', message='Teste de post')
         self.resp = self.client.post('/contact/', data)
 
     def test_post(self):
-        self.assertRedirects(self.resp, '/contact/1/')
+        self.assertRedirects(self.resp, '/contact/')
 
 
     def test_send_contact_email(self):
-        self.assertEqual(1, len(mail.outbox))
+        self.assertEqual(2, len(mail.outbox))
 
     def test_save_contact(self):
         self.assertTrue(ContactModel.objects.exists())
 
 
-class SubscribePostInvalid(TestCase):
+class ContactPostInvalid(TestCase):
     def setUp(self):
         self.resp = self.client.post('/contact/', {})
 
@@ -70,6 +72,34 @@ class SubscribePostInvalid(TestCase):
 
     def test_dont_save_contact(self):
         self.assertFalse(ContactModel.objects.exists())
+
+
+class ContactEmailPostValid(TestCase):
+    def setUp(self):
+        data = dict(name="Eduardo Silva", email='duduzada123@gmail.com', phone='53-12345-6789',
+        message='Teste de Email!')
+        self.client.post('/contact/', data)
+        self.email = mail.outbox[0]
+    def test_contact_email_subject(self):
+        expect = 'Obrigado por entrar em contato!'
+        self.assertEqual(expect, self.email.subject)
+    def test_contact_email_from(self):
+        expect = 'eduardo.silva@aluno.riogrande.ifrs.edu.br' #TROCAR
+        self.assertEqual(expect, self.email.from_email)
+    def test_contact_email_to(self):
+        expect = ['duduzada123@gmail.com'] # TROCAR
+        self.assertEqual(expect, self.email.to)
+    def test_contact_email_body(self):
+        contents = (
+            'Eduardo Silva',
+            '53-12345-6789',
+            'duduzada123@gmail.com',
+            'Teste de Email!'
+        )
+        for content in contents:
+            with self.subTest():
+                self.assertIn(content, self.email.body)
+
 
 
 

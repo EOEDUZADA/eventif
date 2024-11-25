@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from contact.forms import ContactForm
 from contact.models import ContactModel
 from django.template.loader import render_to_string
@@ -31,7 +31,7 @@ def contact(request):
             send_mail(
                 assunto_email_usuario,
                 body,
-                config('DEFAULT_FROM_EMAIL'), #from meu email
+                config('EMAIL_HOST_USER'), #from meu email TROCAR PARA DEFAULT FROM EMAIL
                 [email],  #to email do usuário
                 fail_silently=False
             )
@@ -42,11 +42,14 @@ def contact(request):
             send_mail(
                 assunto_email_admin,
                 body,
-                config('DEFAULT_FROM_EMAIL'), #from meu email
-                [config('DEFAULT_TO_EMAIL')], #to - email do eventif
+                config('EMAIL_HOST_USER'), #from meu email TROCAR PARA DEFAULT_FROM_EMAIL
+                [config('EMAIL_HOST_USER')], #to - email do eventif
                 fail_silently=False 
             )
-            return HttpResponse("Formulário enviado com sucesso!") 
+
+            ContactModel.objects.create(**form.cleaned_data)
+
+            return HttpResponseRedirect("/contact/") 
 
     else:
         form = ContactForm()

@@ -29,9 +29,10 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
 
-DEFAULT_FROM_EMAIL = 'contato@eventif.com.br'
+DEFAULT_FROM_EMAIL = 'contato@eventif.com.br' # TROCAR NA VERSAO FINAL
+DEFAULT_TO_EMAIL = 'contato@eventif.com.br' #TROCAR NA VERSÃO FINAL
 
-DEFAULT_TO_EMAIL = ['contato@eventif.com.br']
+
 
 
 # Application definition
@@ -141,7 +142,7 @@ EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
-DEFAULT_TO_EMAIL = config('DEFAULT_TO_EMAIL')
+#DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+#DEFAULT_TO_EMAIL = config('DEFAULT_TO_EMAIL')
 
 
