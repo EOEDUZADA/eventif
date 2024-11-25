@@ -14,6 +14,11 @@ class Migration(migrations.Migration):
             name='subscription',
             options={'ordering': ('-created_at',), 'verbose_name': 'inscrição', 'verbose_name_plural': 'inscrições'},
         ),
+        migrations.AddField(
+            model_name='subscription',
+            name='paid',
+            field=models.BooleanField(default=False),
+        ),
         migrations.AlterField(
             model_name='subscription',
             name='cpf',
