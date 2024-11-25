@@ -3,11 +3,12 @@ from django.core import mail
 from subscriptions.forms import SubscriptionForm
 from subscriptions.models import Subscription
 import unittest
+from django.shortcuts import resolve_url as r
 
 
 class SubscribeGet(TestCase):
     def setUp(self):
-        self.response = self.client.get('/inscricao/')
+        self.response = self.client.get(r('subscriptions:new'))
 
     def test_get(self):
         self.assertEqual(200, self.response.status_code)
@@ -36,10 +37,10 @@ class SubscribePostValid(TestCase):
     def setUp(self):
         data = dict(name="Cleber Fonseca", cpf='12345678901',
                     email='profcleberfonseca@gmail.com', phone='53-12345-6789')
-        self.resp = self.client.post('/inscricao/', data)
+        self.resp = self.client.post(r('subscriptions:new'), data)
 
     def test_post(self):
-        self.assertRedirects(self.resp, '/inscricao/1/')
+        self.assertRedirects(self.resp, r('subscriptions:detail', 1))
 
 
     def test_send_subscription_email(self):
@@ -51,7 +52,7 @@ class SubscribePostValid(TestCase):
 
 class SubscribePostInvalid(TestCase):
     def setUp(self):
-        self.resp = self.client.post('/inscricao/', {})
+        self.resp = self.client.post(r('subscriptions:new'), {})
 
     def test_post(self):
         self.assertEqual(200, self.resp.status_code)
