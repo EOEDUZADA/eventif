@@ -15,7 +15,7 @@ class ContactPostValid(TestCase):
 
 
     def test_send_contact_email(self):
-        self.assertEqual(2, len(mail.outbox))
+        self.assertEqual(1, len(mail.outbox))
 
     def test_save_contact(self):
         self.assertTrue(ContactModel.objects.exists())

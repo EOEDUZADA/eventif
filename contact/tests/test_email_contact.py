@@ -12,10 +12,10 @@ class ContactEmailPostValid(TestCase):
         expect = 'Obrigado por entrar em contato!'
         self.assertEqual(expect, self.email.subject)
     def test_contact_email_from(self):
-        expect = 'eduardo.silva@aluno.riogrande.ifrs.edu.br' #TROCAR
+        expect = 'jfmarques0909.shadow@gmail.com' #TROCAR
         self.assertEqual(expect, self.email.from_email)
     def test_contact_email_to(self):
-        expect = ['duduzada123@gmail.com'] # TROCAR
+        expect = ['duduzada123@gmail.com', 'contato@eventif.com.br'] # TROCAR
         self.assertEqual(expect, self.email.to)
     def test_contact_email_body(self):
         contents = (

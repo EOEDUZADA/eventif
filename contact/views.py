@@ -7,51 +7,52 @@ from contact.forms import ContactForm
 from contact.models import ContactModel
 from django.template.loader import render_to_string
 from decouple import config
+from django.contrib import messages
 
 def contact(request):
     if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-
-            name = form.cleaned_data['name']
-            phone = form.cleaned_data['phone']
-            email = form.cleaned_data['email']
-            message = form.cleaned_data['message']
-
-
-            body = render_to_string('contact/template_contact_email.txt', {
-                'name': name,
-                'phone': phone,
-                'email': email,
-                'message': message,
-            })
-
-            # usuário
-            assunto_email_usuario = "Obrigado por entrar em contato!"
-            send_mail(
-                assunto_email_usuario,
-                body,
-                config('EMAIL_HOST_USER'), #from meu email TROCAR PARA DEFAULT FROM EMAIL
-                [email],  #to email do usuário
-                fail_silently=False
-            )
-
-
-            # administrador
-            assunto_email_admin = "Novo contato de um usuário!"
-            send_mail(
-                assunto_email_admin,
-                body,
-                config('EMAIL_HOST_USER'), #from meu email TROCAR PARA DEFAULT_FROM_EMAIL
-                [config('EMAIL_HOST_USER')], #to - email do eventif
-                fail_silently=False 
-            )
-
-            ContactModel.objects.create(**form.cleaned_data)
-
-            return HttpResponseRedirect("/contact/") 
-
+        return create(request)
     else:
-        form = ContactForm()
+        return new(request)
 
-    return render(request, 'contact/formulario_contact.html', {'form': form})
+def create(request):
+    form = ContactForm(request.POST)
+
+
+    if not form.is_valid():
+        return render(request, 'contact/formulario_contact.html', {'form': form})
+
+    # Lista de destinatários
+    to_emails = [
+        form.cleaned_data['email'],  # Email do usuário
+        settings.DEFAULT_TO_EMAIL    # Email do eventif
+    ]
+
+    # Envia o email 
+    _send_mail(
+        'contact/template_contact_email.txt',
+        form.cleaned_data,
+        'Obrigado por entrar em contato!',
+        config('EMAIL_HOST_USER'),
+        to_emails  # tupla com os destinatarios
+    )
+
+    # Salva no banco
+    ContactModel.objects.create(**form.cleaned_data)
+
+    # mensagem de sucess
+    messages.success(request, 'Contato enviado com sucesso!')
+    return HttpResponseRedirect('/contact/')
+
+def new(request):
+    return render(request, 'contact/formulario_contact.html', {'form': ContactForm()})
+
+def _send_mail(template_name, context, subject, from_email, to_emails):
+    body = render_to_string(template_name, context)
+    send_mail(
+        subject,  # Assunto do e-mail
+        body,     # Corpo do e-mail (template)
+        from_email,  # E-mail do remetente
+        to_emails,  # Lista de destinatários
+        fail_silently=False  # Se falhar, irá lançar um erro
+    )
