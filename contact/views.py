@@ -37,7 +37,6 @@ def create(request):
         to_emails  # tupla com os destinatarios
     )
 
-    # Salva no banco
     ContactModel.objects.create(**form.cleaned_data)
 
     # mensagem de sucess
@@ -50,9 +49,9 @@ def new(request):
 def _send_mail(template_name, context, subject, from_email, to_emails):
     body = render_to_string(template_name, context)
     send_mail(
-        subject,  # Assunto do e-mail
-        body,     # Corpo do e-mail (template)
-        from_email,  # E-mail do remetente
-        to_emails,  # Lista de destinatários
+        subject,  # Assunto
+        body,     # (template)
+        from_email,  # quem envia
+        to_emails,  # quem recebe o email
         fail_silently=False  # Se falhar, irá lançar um erro
     )
