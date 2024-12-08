@@ -29,10 +29,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
 
-DEFAULT_FROM_EMAIL = 'contato@eventif.com.br' # TROCAR NA VERSAO FINAL
-DEFAULT_TO_EMAIL = 'contato@eventif.com.br' #TROCAR NA VERSÃO FINAL
-
-
+DEFAULT_FROM_EMAIL = 'contato@eventif.com.br' # email do eventif
+DEFAULT_TO_EMAIL = 'contato@eventif.com.br' # email do eventif
 
 
 # Application definition

@@ -22,13 +22,11 @@ def create(request):
     if not form.is_valid():
         return render(request, 'contact/formulario_contact.html', {'form': form})
 
-    # Lista de destinatários
     to_emails = [
         form.cleaned_data['email'],  # Email do usuário
         settings.DEFAULT_TO_EMAIL    # Email do eventif
     ]
-
-    # Envia o email 
+ 
     _send_mail(
         'contact/template_contact_email.txt',
         form.cleaned_data,
