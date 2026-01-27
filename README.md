@@ -1,6 +1,6 @@
 # EventIF
 
-Sistema de evento encomendado pela direção do campus Rio Grande
+Sistema para inscrição em um evento fictício do IFRS
 
 ## Como desenvolver
 
