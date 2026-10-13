@@ -1,6 +1,8 @@
 # EventIF
 
-Sistema para inscrição em um evento fictício do IFRS
+Sistema para inscrição em um evento fictício do IFRS, com funcionalidade de envio de emails automáticos
+
+Desenvolvido com Django e Python.
 
 ## Como desenvolver
 
